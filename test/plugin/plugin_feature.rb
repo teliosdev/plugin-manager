@@ -6,14 +6,14 @@ class TestPluginFeatures < Test::Unit::TestCase
 
   test "throws errors for bad calls" do
     # I didn't call +add_plugin+ before I called +add_feature+.
-    assert_raise PluginManager::PluginListError do
+    assert_raise PluginManager::PluginFeatureError do
       Class.new(PluginManager::Plugin) do
         add_feature :hello, TestFeature
       end
     end
 
     # TestFeature isn't a decendent of +PluginManager::Plugin::Feature+.
-    assert_raise PluginManager::PluginListError do
+    assert_raise PluginManager::PluginFeatureError do
       Class.new(PluginManager::Plugin) do
         add_plugin :fake_plugin
 

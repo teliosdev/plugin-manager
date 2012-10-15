@@ -60,7 +60,7 @@ module PluginManager
 
         # Provides access to the features.
         def features
-          FEATURES
+          PluginFeatures.features
         end
 
         # Provide access to PLUGINS
@@ -72,55 +72,54 @@ module PluginManager
         # Also initializes the FEATURES key-value pair.
         def add_plugin(name, klass)
           self[name] = klass
-          features[name] = Hash.new do |hash, key|
-            hash[key] = {}
-          end
         end
 
         # Add a feature to the list.
-        def add_feature_for(plugin, name, feature_class)
-          raise PluginListError,
-            "Class `#{feature_class}' is not a child of `#{Plugin::Feature}'" unless
-            feature_class < Plugin::Feature
-          features[plugin][name] = feature_class
-        end
+        #def add_feature_for(plugin, name, feature_class)
+        #  raise PluginListError,
+        #    "Class `#{feature_class}' is not a child of `#{Plugin::Feature}'" unless
+        #    feature_class < Plugin::Feature
+        #  features[plugin][name] = feature_class
+        #end
+
+        # Enables the selected features for the plugin.  +:all+ is
+        # replaced with all of the features.
+        # It will ignore any features that it cannot find.
+        #def enable_feature_for(plugin, *raw_features)
+        #  klass = find_plugin! plugin
+        #  _resolve_features(plugin, raw_features).each do |feature|
+        #    self.features[plugin][feature].enable
+        #  end
+        #end
+
+        # Disables the selected features for the plugin. +:all+ is
+        # replaced with all of the features.  It will ignore any
+        # features that it cannot find.
+        #def disable_feature_for(plugin, *raw_features)
+        #  klass = find_plugin! plugin
+        #  _resolve_features(plugin, raw_features).each do |feature|
+        #    self.features[plugin][feature].disable
+        #  end
+        #end
+
       end
 
-      # Enables the selected features for the plugin.  +:all+ is
-      # replaced with all of the features.
-      # It will ignore any features that it cannot find.
-      def enable_feature_for(plugin, *raw_features)
-        klass = find_plugin! plugin
-        _resolve_features(plugin, raw_features).each do |feature|
-          self.features[plugin][feature].enable
-        end
-      end
 
-      # Disables the selected features for the plugin. +:all+ is
-      # replaced with all of the features.  It will ignore any
-      # features that it cannot find.
-      def disable_feature_for(plugin, *raw_features)
-        klass = find_plugin! plugin
-        _resolve_features(plugin, raw_features).each do |feature|
-          self.features[plugin][feature].disable
-        end
-      end
+      #protected
 
-      protected
-
-      def _resolve_features(plugin, raw_features) #:nodoc:
-        raw_features.flatten!
-        features = []
-        plugin_features = self.features[plugin].keys
-        raw_features.each do |f|
-          next unless [*plugin_features, :all].include? f
-          if f == :all
-            features.push *plugin_features
-          else
-            features << f
-          end
-        end
-      end
+      #def _resolve_features(plugin, raw_features) #:nodoc:
+      #  raw_features.flatten!
+      #  features = []
+      #  plugin_features = self.features[plugin].keys
+      #  raw_features.each do |f|
+      #    next unless [*plugin_features, :all].include? f
+      #    if f == :all
+      #      features.push *plugin_features
+      #    else
+      #      features << f
+      #    end
+      #  end
+      #end
 
       # Methods to add to the PluginManager::Plugin class as class
       # methods.
@@ -144,12 +143,12 @@ module PluginManager
 
         # Add a feature to the feature list so that it can be registered
         # properly with the observers.
-        def add_feature(name, feature_class, klass=self)
-          plugin_name = PluginList.plugin klass
-          raise PluginListError,
-          "Could not find plugin for class `#{klass}'" unless plugin_name
-          PluginList.add_feature_for plugin_name, name, feature_class
-        end
+        #def add_feature(name, feature_class, klass=self)
+        #  plugin_name = PluginList.plugin klass
+        #  raise PluginListError,
+        #  "Could not find plugin for class `#{klass}'" unless plugin_name
+        #  PluginList.add_feature_for plugin_name, name, feature_class
+        #end
       end
     end
   end

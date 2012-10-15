@@ -10,6 +10,7 @@ class Feature1 < PluginManager::Plugin::Feature
 end
 
 class FeaturePlugin < PluginManager::Plugin
+
   add_plugin :feature_plugin
 
   add_feature :feature_1, Feature1

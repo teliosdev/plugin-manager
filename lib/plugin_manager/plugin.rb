@@ -1,5 +1,6 @@
 require 'plugin_manager/plugin/feature'
 require 'plugin_manager/plugin/plugin_list'
+require 'plugin_manager/plugin/plugin_features'
 #require 'plugin_manager/plugin/plugin_setup'
 
 module PluginManager
@@ -11,5 +12,6 @@ module PluginManager
   # to add it to the plugin managment system.
   class Plugin
     include PluginList
+    include PluginFeatures
   end
 end

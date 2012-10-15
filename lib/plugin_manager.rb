@@ -2,6 +2,7 @@ lib_dir = File.absolute_path('../', __FILE__)
 $: << lib_dir unless $:.include? lib_dir
 
 require 'plugin_manager/plugin'
+require 'plugin_manager/database_interface'
 
 ##
 #= Plugin Manager

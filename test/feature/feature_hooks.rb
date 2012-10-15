@@ -8,7 +8,7 @@ class TestFeatureHooks < Test::Unit::TestCase
 
   test "runs hooks" do
     assert_nothing_raised do
-      Feature1.enable
+      PluginManager::Plugin::PluginFeatures.enable_feature_for :feature_plugin, :feature_1
     end
     assert Feature1.instance_variable_get(:@run_called)
   end
