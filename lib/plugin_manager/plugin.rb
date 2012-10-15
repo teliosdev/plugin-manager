@@ -1,4 +1,6 @@
+require 'plugin_manager/plugin/feature'
 require 'plugin_manager/plugin/plugin_list'
+#require 'plugin_manager/plugin/plugin_setup'
 
 module PluginManager
 
@@ -8,6 +10,6 @@ module PluginManager
   # a plugin extends this class, it is expected to call +add_plugin+
   # to add it to the plugin managment system.
   class Plugin
-    extend PluginList::ClassMethods
+    include PluginList
   end
 end
