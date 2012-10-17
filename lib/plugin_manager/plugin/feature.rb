@@ -2,7 +2,7 @@ require 'plugin_manager/plugin/feature/feature_setup'
 
 module PluginManager
 
-  class Plugin
+  module Plugin
 
     # A feature of a plugin, this contains all of the logic of the
     # plugin, such as activerecord callbacks, controller stuff, etc.
@@ -10,6 +10,7 @@ module PluginManager
     # as the actual item.
     class Feature
       include FeatureSetup
+      include FeatureSetup::Neutral
     end
   end
 end

@@ -2,7 +2,7 @@ require 'plugin_manager/plugin/plugin_setup/enable'
 
 module PluginManager
 
-  class Plugin
+  module Plugin
 
     # This isn't actually a part of the plugin manager anymore.  This
     # was the old way of enabling/disabling plugins, and was going to

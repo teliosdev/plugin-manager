@@ -10,8 +10,8 @@ module PluginManager
 
     class << self
       # Add a callback.
-      def add_callback(klass, event, cb_name, method=nil, &block)
-        CALLBACKS[klass][event][cb_name] = method || block
+      def add_callback(klass, event, cb_name, owner, &block)
+        CALLBACKS[klass][event][cb_name] = [owner, block]
       end
 
       # Remove a callback.
@@ -20,9 +20,10 @@ module PluginManager
       end
 
       # Run a callback of the specified class and event.
-      def run_callback(klass, event, arguments)
+      def run_callback(klass, event, *arguments)
+        arguments.flatten!
         CALLBACKS[klass][event].each do |k, v|
-          v.call *arguments if v
+          v[1].call v[0], *arguments if v
         end
       end
 

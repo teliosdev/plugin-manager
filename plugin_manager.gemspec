@@ -14,4 +14,5 @@ Gem::Specification.new do |spec|
 	spec.description = <<-DOC
 	A Rails Plugin management system, that keeps track of your plugins and allows for diabling or enabling of the plugins.
 DOC
+	spec.add_dependency 'activesupport'
 end

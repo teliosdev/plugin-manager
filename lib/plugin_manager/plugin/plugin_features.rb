@@ -1,5 +1,5 @@
 module PluginManager
-  class Plugin
+  module Plugin
     module PluginFeatures
 
       # The feature list.  This contains all of the plugins and their
@@ -26,6 +26,12 @@ module PluginManager
 
         # Add a feature to the list.
         def add_feature_for(plugin, name, feature_class)
+          unless feature_class
+            # Make sure that no matter what, the plugin is correct in its path to the feature;
+            # i.e., if there is a plugin called +:my_plugin+ of class My::Plugin, this will
+            # correctly reference +My::Plugin+, not +MyPlugin+.
+            feature_class = "#{PluginList[plugin]}::#{name.to_s.camelize}".constantize
+          end
           raise PluginFeatureError,
             "Class `#{feature_class}' is not a child of `#{Plugin::Feature}'" unless
             feature_class < Plugin::Feature
@@ -73,12 +79,27 @@ module PluginManager
       module ClassMethods
         # Add a feature to the feature list so that it can be registered
         # properly with the observers.
-        def add_feature(name, feature_class, klass=self)
-          plugin_name = PluginList.plugin klass
-          raise PluginFeatureError,
-          "Could not find plugin for class `#{klass}'" unless plugin_name
+        def add_feature(name, feature_class=nil, klass=self)
+          plugin_name = PluginList.plugin! klass
           PluginFeatures.add_feature_for plugin_name, name, feature_class
         end
+
+        # Enables a feature for the class.
+        def enable_feature(*features)
+          plugin_name = PluginList.plugin! self
+          PluginFeatures.enable_feature_for plugin_name, *features
+        end
+
+        alias_method :enable_features, :enable_feature
+
+        # Disables a feature for the class.
+        def disable_feature(*features)
+          plugin_name = PluginList.plugin! self
+          PluginFeatures.disable_feature_for plugin_name, *features
+        end
+
+        alias_method :disable_features, :disable_feature
+
       end
 
     end

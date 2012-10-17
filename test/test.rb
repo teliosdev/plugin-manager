@@ -12,6 +12,6 @@ class Test::Unit::TestCase
   end
 end
 
-Dir["./**/*.rb"].each do |d|
+Dir[File.absolute_path("../**/*.rb", __FILE__)].each do |d|
   require d
 end

@@ -1,8 +1,9 @@
 require 'plugin_manager/plugin/feature/feature_setup/enable'
 require 'plugin_manager/plugin/feature/feature_setup/disable'
+require 'plugin_manager/plugin/feature/feature_setup/neutral'
 
 module PluginManager
-  class Plugin
+  module Plugin
     class Feature
 
       # This enables/disables the feature.  It uses a method called
@@ -39,9 +40,9 @@ module PluginManager
           # before triggering the enable hooks.
           def enable
             return if enabled?
-            self.send :init, FeatureSetup::Enable if respond_to? :init
-            _trigger_enable_hooks
             @_enabled = true
+            self.send :init if respond_to? :init
+            _trigger_enable_hooks
           end
 
           # Disable the feature.  It uses +init+ to run the final
@@ -49,7 +50,7 @@ module PluginManager
           def disable
             return unless enabled?
             _trigger_disable_hooks
-            self.send :init, FeatureSetup::Disable if respond_to? :init
+            self.send :init if respond_to? :init
             @_enabled = false
           end
 
