@@ -4,11 +4,11 @@ Plugin Manager is a plugin management system for Ruby On Rails.  It allows the R
 ## Installing ##
 You'll have to use cloning from github for now:
 
-	$ git clone git://github.com/redjazz96/plugin-manager
+  $ git clone git://github.com/redjazz96/plugin-manager
 
 For inclusion in a Gemfile:
 
-	gem 'plugin_manager', :github => "redjazz96/plugin-manager"
+  gem 'plugin_manager', :github => "redjazz96/plugin-manager"
 
 ## Using ##
 
@@ -22,16 +22,16 @@ class Plugin1 < Rails::Engine
 
   # Sadly, you can't +include+ a Feature.
   class Feature1 < PluginManager::Plugin::Feature
-  	add_enable_hook :up
-  	def up
-  		puts "Hello World!"
-  	end
+    add_enable_hook :up
+    def up
+      puts "Hello World!"
+    end
   end
 
   add_feature :feature_1 # the class name isn't required here, because
-  											 # a) it's a child constant of Plugin1 and
-  											 # b) the class name can be inferred by the
-  											 # feature name.
+                         # a) it's a child constant of Plugin1 and
+                         # b) the class name can be inferred by the
+                         # feature name.
 ```
 
 This allows you to add things to the Rails application itself.  If you need to know out there whether or not a certain feature of the plugin is enabled or not, `Plugin1.enabled_feature?(:feature_1)` can help.
@@ -45,30 +45,30 @@ Features can be defined anywhere and added to any plugins or even multiple plugi
 
 ```Ruby
 module MyModule
-	class SomeFeature < PluginManager::Plugin::Feature
-		add_enable_hook :up
+  class SomeFeature < PluginManager::Plugin::Feature
+    add_enable_hook :up
 
-		def up
-			# do something...
-		end
+    def up
+      # do something...
+    end
 
-		def init
-			if enabled?
-				# same as +add_enable_hook+
-			else
-				# same as +add_disable_hook+
-			end
-		end
-	end
+    def init
+      if enabled?
+        # same as +add_enable_hook+
+      else
+        # same as +add_disable_hook+
+      end
+    end
+  end
 end
 
 # later...
 
 class MyPlugin < Rails::Engine
-	include PluginManager::Plugin
-	add_plugin :my_plugin
+  include PluginManager::Plugin
+  add_plugin :my_plugin
 
-	add_feature :some_feature, MyModule::SomeFeature
+  add_feature :some_feature, MyModule::SomeFeature
 end
 
 ```
