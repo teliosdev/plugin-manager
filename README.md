@@ -4,11 +4,11 @@ Plugin Manager is a plugin management system for Ruby On Rails.  It allows the R
 ## Installing ##
 You'll have to use cloning from github for now:
 
-  $ git clone git://github.com/redjazz96/plugin-manager
+    $ git clone git://github.com/redjazz96/plugin-manager
 
 For inclusion in a Gemfile:
 
-  gem 'plugin_manager', :github => "redjazz96/plugin-manager"
+    gem 'plugin_manager', :github => "redjazz96/plugin-manager"
 
 ## Using ##
 
