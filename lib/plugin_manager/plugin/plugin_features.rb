@@ -111,6 +111,11 @@ module PluginManager
           PluginFeatures.plugin_features(@_plugin_name).values
         end
 
+        # Checks to see if a feature is enabled or not.
+        def enabled_feature?(feature)
+          PluginFeature.plugin_features(@_plugin_name)[feature].enabled?
+        end
+
       end
 
     end

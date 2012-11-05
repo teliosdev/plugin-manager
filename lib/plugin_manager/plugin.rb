@@ -2,7 +2,7 @@ require 'plugin_manager/plugin/feature'
 require 'plugin_manager/plugin/plugin_list'
 require 'plugin_manager/plugin/plugin_features'
 require 'plugin_manager/plugin/plugin_setup'
-require 'plugin_manager/plugin/rails_engine' if defined? ::Rails
+#require 'plugin_manager/plugin/rails_engine' if defined? ::Rails
 #require 'plugin_manager/plugin/plugin_setup'
 
 #
@@ -17,13 +17,13 @@ module PluginManager
     include PluginList
     include PluginFeatures
     include PluginSetup
-    include RailsEngine if defined? ::Rails
+    #include RailsEngine if defined? ::Rails
 
     def self.included(base)
       base.send :include, PluginList
       base.send :include, PluginFeatures
       base.send :include, PluginSetup
-      base.send :include, RailsEngine if defined? ::Rails
+      #base.send :include, RailsEngine if defined? ::Rails
     end
   end
 end

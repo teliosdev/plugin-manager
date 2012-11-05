@@ -37,17 +37,17 @@ module PluginManager
           def enable
             return if enabled?
             @_enabled = true
-            self.send :init if respond_to? :init
-            _trigger_enable_hooks
+            i = _trigger_enable_hooks
+            i.send :init if i.respond_to? :init
           end
 
           # Disable the feature.  It uses +init+ to run the final
           # shutdown of things, after triggering the disable hooks.
           def disable
             return unless enabled?
-            _trigger_disable_hooks
-            self.send :init if respond_to? :init
             @_enabled = false
+            i = _trigger_disable_hooks
+            i.send :init if i.respond_to? :init
           end
 
           # Determines whether or not the plugin is enabled.  If it
@@ -59,19 +59,21 @@ module PluginManager
           private
 
           def _trigger_enable_hooks #:nodoc:
-            return unless @_enable_hooks and @_enable_hooks.length > 0
             instance = self.new
+            return instance unless @_enable_hooks and @_enable_hooks.length > 0
             @_enable_hooks.each do |m|
               instance.send m
             end
+            instance
           end
 
           def _trigger_disable_hooks #:nodoc:
-            return unless @_disable_hooks and @_disable_hooks.length > 0
+            return instance unless @_disable_hooks and @_disable_hooks.length > 0
             instance = self.new
             @_disable_hooks.each do |m|
               instance.send m
             end
+            instance
           end
 
         end
