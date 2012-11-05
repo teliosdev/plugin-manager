@@ -103,6 +103,7 @@ module PluginManager
         # automatically sets the plugin's class to itself.
         def add_plugin(name, klass=self)
           PluginList.add_plugin name, klass
+          @_plugin_name = name if klass == self
         end
       end
     end

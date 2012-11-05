@@ -1,7 +1,3 @@
-require 'plugin_manager/plugin/feature/feature_setup/enable'
-require 'plugin_manager/plugin/feature/feature_setup/disable'
-require 'plugin_manager/plugin/feature/feature_setup/neutral'
-
 module PluginManager
   module Plugin
     class Feature
@@ -64,15 +60,17 @@ module PluginManager
 
           def _trigger_enable_hooks #:nodoc:
             return unless @_enable_hooks and @_enable_hooks.length > 0
+            instance = self.new
             @_enable_hooks.each do |m|
-              self.send m
+              instance.send m
             end
           end
 
           def _trigger_disable_hooks #:nodoc:
             return unless @_disable_hooks and @_disable_hooks.length > 0
+            instance = self.new
             @_disable_hooks.each do |m|
-              self.send m
+              instance.send m
             end
           end
 

@@ -10,7 +10,6 @@ module PluginManager
     # as the actual item.
     class Feature
       include FeatureSetup
-      include FeatureSetup::Neutral
     end
   end
 end

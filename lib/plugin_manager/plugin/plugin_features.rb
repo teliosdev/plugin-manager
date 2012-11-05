@@ -24,8 +24,10 @@ module PluginManager
           FEATURES[plugin]
         end
 
-        # Add a feature to the list.
-        def add_feature_for(plugin, name, feature_class)
+        # Add a feature to the list.  If no class is given, it tries
+        # to guess the class based on the plugin and the name of the
+        # feature.
+        def add_feature_for(plugin, name, feature_class=nil)
           unless feature_class
             # Make sure that no matter what, the plugin is correct in its path to the feature;
             # i.e., if there is a plugin called +:my_plugin+ of class My::Plugin, this will
@@ -42,9 +44,11 @@ module PluginManager
         # replaced with all of the features.
         # It will ignore any features that it cannot find.
         def enable_feature_for(plugin, *raw_features)
-          klass = PluginList.find_plugin! plugin
+          PluginList.find_plugin! plugin
           _resolve_features(plugin, raw_features).each do |feature|
-            self.features[plugin][feature].enable
+            f = self.features[plugin][feature]
+            next if f.enabled?
+            f.enable
           end
         end
 
@@ -52,9 +56,11 @@ module PluginManager
         # replaced with all of the features.  It will ignore any
         # features that it cannot find.
         def disable_feature_for(plugin, *raw_features)
-          klass = PluginList.find_plugin! plugin
+          PluginList.find_plugin! plugin
           _resolve_features(plugin, raw_features).each do |feature|
-            self.features[plugin][feature].disable
+            f = self.features[plugin][feature]
+            next unless f.enabled?
+            f.disable
           end
         end
 
@@ -72,6 +78,7 @@ module PluginManager
               features << f
             end
           end
+          features
         end
 
       end
@@ -80,25 +87,29 @@ module PluginManager
         # Add a feature to the feature list so that it can be registered
         # properly with the observers.
         def add_feature(name, feature_class=nil, klass=self)
-          plugin_name = PluginList.plugin! klass
-          PluginFeatures.add_feature_for plugin_name, name, feature_class
+          PluginFeatures.add_feature_for @_plugin_name, name, feature_class
         end
 
         # Enables a feature for the class.
         def enable_feature(*features)
-          plugin_name = PluginList.plugin! self
-          PluginFeatures.enable_feature_for plugin_name, *features
+          PluginFeatures.enable_feature_for @_plugin_name, *features
         end
 
         alias_method :enable_features, :enable_feature
 
         # Disables a feature for the class.
         def disable_feature(*features)
-          plugin_name = PluginList.plugin! self
-          PluginFeatures.disable_feature_for plugin_name, *features
+          PluginFeatures.disable_feature_for @_plugin_name, *features
         end
 
         alias_method :disable_features, :disable_feature
+
+        # Returns a list of all of the plugin's features.  This is an
+        # array of the classes themselves; not the names of the
+        # features.
+        def features
+          PluginFeatures.plugin_features(@_plugin_name).values
+        end
 
       end
 
