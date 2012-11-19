@@ -1,4 +1,4 @@
-lib_dir = File.absolute_path('../', __FILE__)
+lib_dir = File.expand_path('../', __FILE__)
 $: << lib_dir unless $:.include? lib_dir
 
 require 'active_support/inflector'

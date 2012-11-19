@@ -1,4 +1,4 @@
-lib_folder = File.absolute_path('../lib', __FILE__)
+lib_folder = File.expand_path('../lib', __FILE__)
 require "#{lib_folder}/plugin_manager/version"
 
 Gem::Specification.new do |spec|
