@@ -71,7 +71,7 @@ module PluginManager
           features = []
           plugin_features = self.features[plugin].keys
           raw_features.each do |f|
-            next unless [*plugin_features, :all].include? f
+            next unless [*plugin_features.dup.push(:all)].include? f
             if f == :all
               features.push *plugin_features
             else
